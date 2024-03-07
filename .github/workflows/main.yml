@@ -1,4 +1,4 @@
-name: RetroPass Build
+﻿name: RetroPass Build
 
 on:
   workflow_dispatch:
