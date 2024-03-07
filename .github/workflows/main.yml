@@ -2,10 +2,8 @@ name: RetroPass Build
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on tag event
-  push:
-    tags:
-      - 'v*'
+  # Allows you to run this workflow manually
+  workflow_dispatch:
       
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
