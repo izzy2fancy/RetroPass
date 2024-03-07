@@ -24,7 +24,10 @@ jobs:
       PackageOutputRootDir: C:\AppPackage
       PackageOutputDir: RetroPass
       PackageOutputBaseName: RetroPass
-
+      Tag: 1.12.1  # Specify the tag here
+      
+    
+      
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:            
       - name: Add msbuild to PATH
@@ -37,9 +40,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
         
-      # Get tag name so a proper package name can be generated
-      - name: Get tag
-        id: getTag
+        # Use the specified tag to generate package name or perform other actions
+      - name: Generate package name
+        run: echo "Package name will be based on tag: ${{ env.Tag }}"
+        
         # You may pin to the exact commit or the version.
         uses: dawidd6/action-get-tag@v1.1.0
       
