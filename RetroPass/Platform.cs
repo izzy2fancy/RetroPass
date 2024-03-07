@@ -1,4 +1,4 @@
-﻿using System.Xml.Serialization;
+using System.Xml.Serialization;
 using Windows.Storage;
 
 namespace RetroPass
@@ -15,6 +15,7 @@ namespace RetroPass
 			xeniacanary,
 			ppsspp,
 			duckstation,
+			duckstation-uwp,
 		}
 		public string Name { get; set; }
 		public string SourceName { get; set; }
@@ -28,53 +29,57 @@ namespace RetroPass
 		[XmlIgnoreAttribute]
 		public StorageFolder BoxFrontFolder { get; set; }
 
-		public void SetEmulatorType(string emulatorPath)
-		{
-			/*if((string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("retroarch", System.StringComparison.InvariantCultureIgnoreCase))
-			{
-				EmulatorType = EEmulatorType.retroarch;
-			}
-			else */
-			if (string.IsNullOrEmpty(emulatorPath) == false &&
-					(emulatorPath.Contains("pcsx2", System.StringComparison.CurrentCultureIgnoreCase) ||
-					emulatorPath.Contains("xbsx2", System.StringComparison.CurrentCultureIgnoreCase))
-				)
-			{
-				EmulatorType = EEmulatorType.xbsx2;
-			}
-			else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("retrix", System.StringComparison.CurrentCultureIgnoreCase))
-			{
-				EmulatorType = EEmulatorType.rgx;
-			}
-			else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("dolphin", System.StringComparison.CurrentCultureIgnoreCase))
-			{
-				EmulatorType = EEmulatorType.dolphin;
-			}
-			else if (string.IsNullOrEmpty(emulatorPath) == false &&
-				(emulatorPath.Contains("xenia-canary", System.StringComparison.CurrentCultureIgnoreCase) ||
-				emulatorPath.Contains("xeniacanary", System.StringComparison.CurrentCultureIgnoreCase))
-				)
-			{
-				EmulatorType = EEmulatorType.xeniacanary;
-			}
-			else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("xenia", System.StringComparison.CurrentCultureIgnoreCase))
-			{
-				EmulatorType = EEmulatorType.xenia;
-			}
-			else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("ppsspp", System.StringComparison.CurrentCultureIgnoreCase))
-			{
-				EmulatorType = EEmulatorType.ppsspp;
-			}
-			else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("duckstation", System.StringComparison.CurrentCultureIgnoreCase))
-			{
-				EmulatorType = EEmulatorType.duckstation;
-			}
-			else
-			{
-				//let it just be default retroarch
-				EmulatorType = EEmulatorType.retroarch;
-			}
-		}
+public void SetEmulatorType(string emulatorPath)
+{
+    /*if((string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("retroarch", System.StringComparison.InvariantCultureIgnoreCase))
+    {
+        EmulatorType = EEmulatorType.retroarch;
+    }
+    else */
+    if (string.IsNullOrEmpty(emulatorPath) == false &&
+            (emulatorPath.Contains("pcsx2", System.StringComparison.CurrentCultureIgnoreCase) ||
+            emulatorPath.Contains("xbsx2", System.StringComparison.CurrentCultureIgnoreCase))
+        )
+    {
+        EmulatorType = EEmulatorType.xbsx2;
+    }
+    else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("retrix", System.StringComparison.CurrentCultureIgnoreCase))
+    {
+        EmulatorType = EEmulatorType.rgx;
+    }
+    else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("dolphin", System.StringComparison.CurrentCultureIgnoreCase))
+    {
+        EmulatorType = EEmulatorType.dolphin;
+    }
+    else if (string.IsNullOrEmpty(emulatorPath) == false &&
+        (emulatorPath.Contains("xenia-canary", System.StringComparison.CurrentCultureIgnoreCase) ||
+        emulatorPath.Contains("xeniacanary", System.StringComparison.CurrentCultureIgnoreCase))
+        )
+    {
+        EmulatorType = EEmulatorType.xeniacanary;
+    }
+    else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("xenia", System.StringComparison.CurrentCultureIgnoreCase))
+    {
+        EmulatorType = EEmulatorType.xenia;
+    }
+    else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("ppsspp", System.StringComparison.CurrentCultureIgnoreCase))
+    {
+        EmulatorType = EEmulatorType.ppsspp;
+    }
+    else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("duckstation", System.StringComparison.CurrentCultureIgnoreCase))
+    {
+        EmulatorType = EEmulatorType.duckstation;
+    }
+    else if (string.IsNullOrEmpty(emulatorPath) == false && emulatorPath.Contains("duckstation-uwp", System.StringComparison.CurrentCultureIgnoreCase))
+    {
+        EmulatorType = EEmulatorType.duckstation_uwp;
+    }
+    else
+    {
+        //let it just be default retroarch
+        EmulatorType = EEmulatorType.retroarch;
+    }
+}
 
 		public Platform Copy()
 		{
