@@ -40,12 +40,9 @@ jobs:
         uses: actions/checkout@v4.1.1
             
         
-      # Get tag name so a proper package name can be generated
-      - name: Get tag
-        id: getTag
-        # You may pin to the exact commit or the version.
-        uses: dawidd6/action-get-tag@v1.2.0
-      
+      - name: Version Tag
+        uses: izzy2fancy/action-get-tag@1.2.0
+            
       # Create package name
       - name: GetPackageName
         id: getPackageName
