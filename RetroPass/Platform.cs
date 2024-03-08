@@ -1,4 +1,6 @@
 using System;
+using System.Xml.Serialization;
+using Windows.Storage;
 
 namespace RetroPass
 {
@@ -18,8 +20,7 @@ namespace RetroPass
             this.ScreenshotGameSelectPath = other.ScreenshotGameSelectPath;
             this.VideoPath = other.VideoPath;
         }
-    }
-}
+
         public enum EmulatorType
         {
             retroarch,
