@@ -44,7 +44,7 @@ jobs:
       - name: Get tag
         id: getTag
         # You may pin to the exact commit or the version.
-        uses: dawidd6/action-get-tag@v1.1.0
+        uses: dawidd6/action-get-tag@v1.2.0
       
       # Create package name
       - name: GetPackageName
