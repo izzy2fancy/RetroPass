@@ -71,7 +71,7 @@ namespace RetroPass
             }
             else if (emulatorPath.Contains("duckstation-uwp", System.StringComparison.CurrentCultureIgnoreCase))
             {
-                EmulatorType = EEmulatorType.duckstation_uwp;
+                EmulatorType = EEmulatorType.duckstation-uwp;
             }
             else
             {
