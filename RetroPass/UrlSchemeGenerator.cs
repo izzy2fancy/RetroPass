@@ -10,28 +10,28 @@ namespace RetroPass
 
             switch (game.GamePlatform.EmulatorType)
             {
-                case Platform.EEmulatorType.retroarch:
+                case Platform.EmulatorType.retroarch:
                     url = GetUrlRetroarch(game);
                     break;
-                case Platform.EEmulatorType.rgx:
+                case Platform.EmulatorType.rgx:
                     url = GetUrlRetrix(game);
                     break;
-                case Platform.EEmulatorType.xbsx2:
+                case Platform.EmulatorType.xbsx2:
                     url = GetUrlXBSX2(game);
                     break;
-                case Platform.EEmulatorType.dolphin:
+                case Platform.EmulatorType.dolphin:
                     url = GetUrlDolphin(game);
                     break;
-                case Platform.EEmulatorType.xenia:
+                case Platform.EmulatorType.xenia:
                     url = GetUrlXenia(game);
                     break;
-                case Platform.EEmulatorType.ppsspp:
+                case Platform.EmulatorType.ppsspp:
                     url = GetUrlPpsspp(game);
                     break;
                 case Platform.EEmulatorType.xeniacanary:
                     url = GetUrlXeniaCanary(game);
                     break;
-                case Platform.EEmulatorType.duckstation:
+                case Platform.EmulatorType.duckstation:
                     url = GetUrlDuckstation(game);
                     break;
                 case Platform.EEmulatorType.duckstationuwp:
