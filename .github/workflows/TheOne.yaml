@@ -46,7 +46,7 @@ jobs:
          if ($latest_tag -ne $null) {
          Write-Host "Latest tag: $latest_tag"
           } else {
-          Write-Host "No tags found.         
+          Write-Host "No tags found."         
           }
             
       # Create package name
