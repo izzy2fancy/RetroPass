@@ -39,44 +39,36 @@ namespace RetroPass
                 return;
             }
 
-            if (emulatorPath.Contains("pcsx2", System.StringComparison.CurrentCultureIgnoreCase) ||
-                emulatorPath.Contains("xbsx2", System.StringComparison.CurrentCultureIgnoreCase))
+            switch (emulatorPath.ToLower())
             {
-                EmulatorType = EmulatorType.xbsx2;
-            }
-            else if (emulatorPath.Contains("retrix", System.StringComparison.CurrentCultureIgnoreCase))
-            {
-                EmulatorType = EmulatorType.rgx;
-            }
-            else if (emulatorPath.Contains("dolphin", System.StringComparison.CurrentCultureIgnoreCase))
-            {
-                EmulatorType = EmulatorType.dolphin;
-            }
-            else if (emulatorPath.Contains("xenia-canary", System.StringComparison.CurrentCultureIgnoreCase) ||
-                     emulatorPath.Contains("xeniacanary", System.StringComparison.CurrentCultureIgnoreCase))
-            {
-                EmulatorType = EmulatorType.xeniacanary;
-            }
-            else if (emulatorPath.Contains("xenia", System.StringComparison.CurrentCultureIgnoreCase))
-            {
-                EmulatorType = EmulatorType.xenia;
-            }
-            else if (emulatorPath.Contains("ppsspp", System.StringComparison.CurrentCultureIgnoreCase))
-            {
-                EmulatorType = EmulatorType.ppsspp;
-            }
-            else if (emulatorPath.Contains("duckstation", System.StringComparison.CurrentCultureIgnoreCase))
-            {
-                EmulatorType = EmulatorType.duckstation;
-            }
-            else if (emulatorPath.Contains("duckstation-uwp", System.StringComparison.CurrentCultureIgnoreCase))
-            {
-                EmulatorType = EmulatorType.duckstationuwp;
-            }
-            else
-            {
-                // Let it default to retroarch if no match is found
-                EmulatorType = EmulatorType.retroarch;
+                case string s when s.Contains("pcsx2") || s.Contains("xbsx2"):
+                    EmulatorType = EmulatorType.xbsx2;
+                    break;
+                case string s when s.Contains("retrix"):
+                    EmulatorType = EmulatorType.rgx;
+                    break;
+                case string s when s.Contains("dolphin"):
+                    EmulatorType = EmulatorType.dolphin;
+                    break;
+                case string s when s.Contains("xenia-canary") || s.Contains("xeniacanary"):
+                    EmulatorType = EmulatorType.xeniacanary;
+                    break;
+                case string s when s.Contains("xenia"):
+                    EmulatorType = EmulatorType.xenia;
+                    break;
+                case string s when s.Contains("ppsspp"):
+                    EmulatorType = EmulatorType.ppsspp;
+                    break;
+                case string s when s.Contains("duckstation"):
+                    EmulatorType = EmulatorType.duckstation;
+                    break;
+                case string s when s.Contains("duckstation-uwp"):
+                    EmulatorType = EmulatorType.duckstationuwp;
+                    break;
+                default:
+                    // Let it default to retroarch if no match is found
+                    EmulatorType = EmulatorType.retroarch;
+                    break;
             }
         }
 
