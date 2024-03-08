@@ -8,33 +8,33 @@ namespace RetroPass
         {
             string url = "";
 
-            switch (game.GamePlatform.EmulatorType)
+            switch (game.GamePlatform)
             {
-                case Platform.EmulatorType.retroarch:
+                case Platform.retroarch:
                     url = GetUrlRetroarch(game);
                     break;
-                case Platform.EmulatorType.rgx:
+                case Platform.rgx:
                     url = GetUrlRetrix(game);
                     break;
-                case Platform.EmulatorType.xbsx2:
+                case Platform.xbsx2:
                     url = GetUrlXBSX2(game);
                     break;
-                case Platform.EmulatorType.dolphin:
+                case Platform.dolphin:
                     url = GetUrlDolphin(game);
                     break;
-                case Platform.EmulatorType.xenia:
+                case Platform.xenia:
                     url = GetUrlXenia(game);
                     break;
-                case Platform.EmulatorType.ppsspp:
+                case Platform.ppsspp:
                     url = GetUrlPpsspp(game);
                     break;
-                case Platform.EmulatorType.xeniacanary:
+                case Platform.xeniacanary:
                     url = GetUrlXeniaCanary(game);
                     break;
-                case Platform.EmulatorType.duckstation:
+                case Platform.duckstation:
                     url = GetUrlDuckstation(game);
                     break;
-                case Platform.EmulatorType.duckstationuwp:
+                case Platform.duckstationuwp:
                     url = GetUrlDuckstationUWP(game);
                     break;
                 default:
@@ -51,7 +51,7 @@ namespace RetroPass
             args += " cores\\" + game.CoreName;
             args += " \"" + Uri.EscapeDataString(game.ApplicationPathFull) + "\"";
             args += "&launchOnExit=" + "retropass:";
-            return game.GamePlatform.EmulatorType.ToString() + ":?" + args;
+            return game.GamePlatform.ToString() + ":?" + args;
         }
 
         private static string GetUrlRetrix(Game game)
@@ -62,7 +62,7 @@ namespace RetroPass
             args += " cores\\" + game.CoreName;
             args += " \"" + Uri.EscapeDataString(game.ApplicationPathFull) + "\"";
             args += " &launchOnExit=" + "retropass:";
-            return game.GamePlatform.EmulatorType.ToString() + ":?" + args;
+            return game.GamePlatform.ToString() + ":?" + args;
         }
 
         private static string GetUrlXBSX2(Game game)
@@ -70,7 +70,7 @@ namespace RetroPass
             string args = "cmd=" + "xbsx2.exe";
             args += " \"" + Uri.EscapeDataString(game.ApplicationPathFull) + "\"";
             args += "&launchOnExit=" + "retropass:";
-            return game.GamePlatform.EmulatorType.ToString() + ":?" + args;
+            return game.GamePlatform.ToString() + ":?" + args;
         }
 
         private static string GetUrlDolphin(Game game)
@@ -78,7 +78,7 @@ namespace RetroPass
             string args = "cmd=" + "dolphin.exe";
             args += " \"" + Uri.EscapeDataString(game.ApplicationPathFull) + "\"";
             args += "&launchOnExit=" + "retropass:";
-            return game.GamePlatform.EmulatorType.ToString() + ":?" + args;
+            return game.GamePlatform.ToString() + ":?" + args;
         }
 
         private static string GetUrlDuckstation(Game game)
@@ -86,7 +86,7 @@ namespace RetroPass
             string args = "cmd=" + "duckstation.exe";
             args += " \"" + Uri.EscapeDataString(game.ApplicationPathFull) + "\"";
             args += "&launchOnExit=" + "retropass:";
-            return game.GamePlatform.EmulatorType.ToString() + ":?" + args;
+            return game.GamePlatform.ToString() + ":?" + args;
         }
 
         private static string GetUrlDuckstationUWP(Game game)
@@ -94,7 +94,7 @@ namespace RetroPass
             string args = "cmd=" + "duckstation-uwp.exe";
             args += " \"" + Uri.EscapeDataString(game.ApplicationPathFull) + "\"";
             args += "&launchOnExit=" + "retropass:";
-            return game.GamePlatform.EmulatorType.ToString() + ":?" + args;
+            return game.GamePlatform.ToString() + ":?" + args;
         }
     }
 }
