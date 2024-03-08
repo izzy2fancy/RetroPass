@@ -1,57 +1,86 @@
-using System;
 using System.Xml.Serialization;
 using Windows.Storage;
 
 namespace RetroPass
 {
-    [Serializable]
     public class Platform
     {
-        public Platform() { }
-
-        public Platform(Platform other)
-        {
-            this.Name = other.Name;
-            this.SourceName = other.SourceName;
-            this.Emulator = other.Emulator;
-            this.BoxFrontPath = other.BoxFrontPath;
-            this.ScreenshotGameTitlePath = other.ScreenshotGameTitlePath;
-            this.ScreenshotGameplayPath = other.ScreenshotGameplayPath;
-            this.ScreenshotGameSelectPath = other.ScreenshotGameSelectPath;
-            this.VideoPath = other.VideoPath;
-        }
-
-        public enum EmulatorType
+        public enum EEmulatorType
         {
             retroarch,
             rgx,
             xbsx2,
             dolphin,
             xenia,
-            ppsspp,
             xeniacanary,
+            ppsspp,
             duckstation,
-            duckstationuwp
+            duckstationuwp  
         }
 
         public string Name { get; set; }
         public string SourceName { get; set; }
-        public EmulatorType Emulator { get; set; }
+        public EEmulatorType EmulatorType { get; set; }
         public string BoxFrontPath { get; set; }
         public string ScreenshotGameTitlePath { get; set; }
         public string ScreenshotGameplayPath { get; set; }
         public string ScreenshotGameSelectPath { get; set; }
         public string VideoPath { get; set; }
 
-        [XmlIgnore]
+        [XmlIgnoreAttribute]
         public StorageFolder BoxFrontFolder { get; set; }
 
         public void SetEmulatorType(string emulatorPath)
         {
-            // Your existing logic for setting the EmulatorType based on emulatorPath
+            if (!string.IsNullOrEmpty(emulatorPath))
+            {
+                if (emulatorPath.Contains("pcsx2", System.StringComparison.CurrentCultureIgnoreCase) ||
+                    emulatorPath.Contains("xbsx2", System.StringComparison.CurrentCultureIgnoreCase))
+                {
+                    EmulatorType = EEmulatorType.xbsx2;
+                }
+                else if (emulatorPath.Contains("retrix", System.StringComparison.CurrentCultureIgnoreCase))
+                {
+                    EmulatorType = EEmulatorType.rgx;
+                }
+                else if (emulatorPath.Contains("dolphin", System.StringComparison.CurrentCultureIgnoreCase))
+                {
+                    EmulatorType = EEmulatorType.dolphin;
+                }
+                else if (emulatorPath.Contains("xenia-canary", System.StringComparison.CurrentCultureIgnoreCase) ||
+                         emulatorPath.Contains("xeniacanary", System.StringComparison.CurrentCultureIgnoreCase))
+                {
+                    EmulatorType = EEmulatorType.xeniacanary;
+                }
+                else if (emulatorPath.Contains("xenia", System.StringComparison.CurrentCultureIgnoreCase))
+                {
+                    EmulatorType = EEmulatorType.xenia;
+                }
+                else if (emulatorPath.Contains("ppsspp", System.StringComparison.CurrentCultureIgnoreCase))
+                {
+                    EmulatorType = EEmulatorType.ppsspp;
+                }
+                else if (emulatorPath.Contains("duckstation-uwp", System.StringComparison.CurrentCultureIgnoreCase) ||
+                         emulatorPath.Contains("duckstation-uwp.exe", System.StringComparison.CurrentCultureIgnoreCase))
+                {
+                    EmulatorType = EEmulatorType.duckstationuwp;
+                }
+                else if (emulatorPath.Contains("duckstation", System.StringComparison.CurrentCultureIgnoreCase))
+                {
+                    EmulatorType = EEmulatorType.duckstation;
+                }
+                else
+                {
+                    EmulatorType = EEmulatorType.retroarch;
+                }
+            }
+            else
+            {
+                EmulatorType = EEmulatorType.retroarch;
+            }
         }
 
-        public Platform Clone()
+        public Platform Copy()
         {
             return (Platform)this.MemberwiseClone();
         }
