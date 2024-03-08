@@ -34,7 +34,7 @@ namespace RetroPass
                 case Platform.EmulatorType.duckstation:
                     url = GetUrlDuckstation(game);
                     break;
-                case Platform.EEmulatorType.duckstationuwp:
+                case Platform.EmulatorType.duckstationuwp:
                     url = GetUrlDuckstationUWP(game);
                     break;
                 default:
