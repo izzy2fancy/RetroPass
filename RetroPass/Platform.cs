@@ -18,12 +18,9 @@ namespace RetroPass
             duckstationuwp
         }
 
-    
-
-
         public string Name { get; set; }
         public string SourceName { get; set; }
-        public EmulatorTypeEnum Emulator { get; set; }
+        public EmulatorType Emulator { get; set; }
         public string BoxFrontPath { get; set; }
         public string ScreenshotGameTitlePath { get; set; }
         public string ScreenshotGameplayPath { get; set; }
@@ -36,7 +33,6 @@ namespace RetroPass
         public void SetEmulatorType(string emulatorPath)
         {
             // Your existing logic for setting the EmulatorType based on emulatorPath
-            // Make sure to update references to the property as EmulatorTypeEnum
         }
 
         public Platform Clone()
