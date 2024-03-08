@@ -1,26 +1,25 @@
 using System.Xml.Serialization;
-using Windows.Storage;
 
 namespace RetroPass
 {
     public class Platform
     {
-        public enum EEmulatorType
+        public enum EmulatorType
         {
-            retroarch,
-            rgx,
-            xbsx2,
-            dolphin,
-            xenia,
-            xeniacanary,
-            ppsspp,
-            duckstation,
-            duckstationuwp
+            Retroarch,
+            Rgx,
+            Xbsx2,
+            Dolphin,
+            Xenia,
+            Xeniacanary,
+            Ppsspp,
+            Duckstation,
+            Duckstationuwp
         }
 
         public string Name { get; set; }
         public string SourceName { get; set; }
-        public EEmulatorType EmulatorType { get; set; }
+        public EmulatorType Type { get; set; }
         public string BoxFrontPath { get; set; }
         public string ScreenshotGameTitlePath { get; set; }
         public string ScreenshotGameplayPath { get; set; }
@@ -28,7 +27,7 @@ namespace RetroPass
         public string VideoPath { get; set; }
 
         [XmlIgnore]
-        public StorageFolder BoxFrontFolder { get; set; }
+        public string BoxFrontFolderPath { get; set; }
 
         public void SetEmulatorType(string emulatorPath)
         {
@@ -37,41 +36,41 @@ namespace RetroPass
                 if (emulatorPath.Contains("pcsx2", System.StringComparison.CurrentCultureIgnoreCase) ||
                     emulatorPath.Contains("xbsx2", System.StringComparison.CurrentCultureIgnoreCase))
                 {
-                    EmulatorType = EEmulatorType.xbsx2;
+                    Type = EmulatorType.Xbsx2;
                 }
                 else if (emulatorPath.Contains("retrix", System.StringComparison.CurrentCultureIgnoreCase))
                 {
-                    EmulatorType = EEmulatorType.rgx;
+                    Type = EmulatorType.Rgx;
                 }
                 else if (emulatorPath.Contains("dolphin", System.StringComparison.CurrentCultureIgnoreCase))
                 {
-                    EmulatorType = EEmulatorType.dolphin;
+                    Type = EmulatorType.Dolphin;
                 }
                 else if (emulatorPath.Contains("xenia-canary", System.StringComparison.CurrentCultureIgnoreCase) ||
                          emulatorPath.Contains("xeniacanary", System.StringComparison.CurrentCultureIgnoreCase))
                 {
-                    EmulatorType = EEmulatorType.xeniacanary;
+                    Type = EmulatorType.Xeniacanary;
                 }
                 else if (emulatorPath.Contains("xenia", System.StringComparison.CurrentCultureIgnoreCase))
                 {
-                    EmulatorType = EEmulatorType.xenia;
+                    Type = EmulatorType.Xenia;
                 }
                 else if (emulatorPath.Contains("ppsspp", System.StringComparison.CurrentCultureIgnoreCase))
                 {
-                    EmulatorType = EEmulatorType.ppsspp;
+                    Type = EmulatorType.Ppsspp;
                 }
                 else if (emulatorPath.Contains("duckstation-uwp", System.StringComparison.CurrentCultureIgnoreCase) ||
                          emulatorPath.Contains("duckstation-uwp.exe", System.StringComparison.CurrentCultureIgnoreCase))
                 {
-                    EmulatorType = EEmulatorType.duckstationuwp;
+                    Type = EmulatorType.Duckstationuwp;
                 }
                 else if (emulatorPath.Contains("duckstation", System.StringComparison.CurrentCultureIgnoreCase))
                 {
-                    EmulatorType = EEmulatorType.duckstation;
+                    Type = EmulatorType.Duckstation;
                 }
                 else
                 {
-                    EmulatorType = EEmulatorType.retroarch;
+                    Type = EmulatorType.Retroarch;
                 }
             }
         }
