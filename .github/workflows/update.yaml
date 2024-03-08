@@ -1,0 +1,32 @@
+name: Update Dependencies
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-dependencies:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Update npm dependencies (if applicable)
+      - name: Update npm packages
+        run: npm update
+        working-directory: .
+
+      # Update NuGet packages
+      - name: Restore NuGet packages
+        run: nuget restore RetroPass.sln
+        working-directory: .
+
+      # Add more steps to update other dependencies (e.g., Composer, pip, etc.)
+
+      # Build app or run tests
+      - name: Build or test
+        run: |
+          # Add your build/test command here
+        working-directory: .
