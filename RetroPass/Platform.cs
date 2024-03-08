@@ -15,7 +15,7 @@ namespace RetroPass
             xeniacanary,
             ppsspp,
             duckstation,
-            duckstationuwp  
+            duckstationuwp
         }
 
         public string Name { get; set; }
@@ -27,7 +27,7 @@ namespace RetroPass
         public string ScreenshotGameSelectPath { get; set; }
         public string VideoPath { get; set; }
 
-        [XmlIgnoreAttribute]
+        [XmlIgnore]
         public StorageFolder BoxFrontFolder { get; set; }
 
         public void SetEmulatorType(string emulatorPath)
@@ -73,11 +73,12 @@ namespace RetroPass
                 {
                     EmulatorType = EEmulatorType.retroarch;
                 }
-            
+            }
+        }
 
-                public Platform Copy()
+        public Platform Copy()
         {
-                return (Platform)this.MemberwiseClone();
+            return (Platform)this.MemberwiseClone();
         }
     }
 }
