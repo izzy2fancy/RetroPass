@@ -42,9 +42,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Get Latest Tag
+        shell: pwsh
         run: |
-         latest_tag=$(git describe --tags --abbrev=0)
-         echo "Latest tag: $latest_tag"
+         $latest_tag = git describe --tags --abbrev=0
+         Write-Host "Latest tag: $latest_tag"
             
       # Create package name
       - name: GetPackageName
