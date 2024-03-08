@@ -42,11 +42,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Get Latest Tag
-        id: get_tag
-        run: echo ::set-output name=tag::$(git describe --tags --abbrev=0)
-
-      - name: Use Tag
-        run: echo "The latest tag is ${{ steps.get_tag.outputs.tag }}"
+        run: |
+         latest_tag=$(git describe --tags --abbrev=0)
+         echo "Latest tag: $latest_tag"
             
       # Create package name
       - name: GetPackageName
