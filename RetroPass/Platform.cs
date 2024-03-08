@@ -73,16 +73,11 @@ namespace RetroPass
                 {
                     EmulatorType = EEmulatorType.retroarch;
                 }
-            }
-            else
-            {
-                
-            }
-        }
+            
 
-        public Platform Copy()
+                public Platform Copy()
         {
-            return (Platform)this.MemberwiseClone();
+                return (Platform)this.MemberwiseClone();
         }
     }
 }
