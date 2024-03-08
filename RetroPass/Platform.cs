@@ -15,7 +15,7 @@ namespace RetroPass
             xeniacanary,
             ppsspp,
             duckstation,
-            duckstation-uwp
+            duckstation_uwp
         }
 
         public string Name { get; set; }
