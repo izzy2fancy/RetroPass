@@ -28,7 +28,7 @@ namespace RetroPass
                 case Platform.EmulatorType.ppsspp:
                     url = GetUrlPpsspp(game);
                     break;
-                case Platform.EEmulatorType.xeniacanary:
+                case Platform.EmulatorType.xeniacanary:
                     url = GetUrlXeniaCanary(game);
                     break;
                 case Platform.EmulatorType.duckstation:
