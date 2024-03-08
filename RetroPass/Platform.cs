@@ -76,7 +76,7 @@ namespace RetroPass
             }
             else
             {
-                EmulatorType = EEmulatorType.retroarch;
+                
             }
         }
 
