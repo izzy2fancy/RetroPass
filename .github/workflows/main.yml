@@ -49,10 +49,9 @@ jobs:
       - name: GetPackageName
         id: getPackageName
         run: |
-          $PackageName = "${{ env.PackageOutputBaseName }}" + "_" + "${{ steps.getTag.outputs.tag }}"          
-          echo "::set-output name=PackageName::$PackageName"
-          Write-Host "Package Name is $PackageName"
-               
+         $PackageName = "${{ env.PackageOutputBaseName }}" + "_" + "${{ steps.getTag.outputs.tag }}"
+         echo "PackageName=$PackageName" >> $GITHUB_ENV
+         Write-Host "Package Name is $PackageName"
       # Decode the Base64 encoded Pfx
       - name: Decode the Pfx
         run: |
