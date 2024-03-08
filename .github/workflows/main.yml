@@ -63,16 +63,16 @@ jobs:
       
       # Build app
       - name: App build
-        run: msbuild $env:SolutionPath 
-          /p:Platform=$env:Platform 
-          /p:Configuration=$env:Configuration 
-          /p:UapAppxPackageBuildMode=$env:BuildMode 
-          /p:AppxBundle=$env:AppxBundle 
-          /p:PackageCertificateKeyFile=$env:SigningCertificate 
-          /p:PackageCertificatePassword=${{ secrets.PFX_KEY_PASSWORD }}
-          /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\${{steps.getPackageName.outputs.PackageName}}\"          
-          /restore
-
+        run: |
+         msbuild $env:SolutionPath 
+         /p:Platform=$env:Platform 
+         /p:Configuration=$env:Configuration 
+         /p:AppxBundle=$env:AppxBundle 
+         /p:PackageCertificateKeyFile=$env:SigningCertificate 
+         /p:PackageCertificatePassword=${{ secrets.PFX_KEY_PASSWORD }}
+         /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\${{steps.getPackageName.outputs.PackageName}}\" 
+         /p:UapAppxPackageBuildMode=$env:BuildMode
+         /restore
       # Remove the .pf
       - name: Remove the .pfx
         run: Remove-Item -path $env:ProjectDirectory/$env:SigningCertificate
