@@ -1,10 +1,25 @@
-using System.Xml.Serialization;
-using Windows.Storage;
+using System;
 
 namespace RetroPass
 {
+    [Serializable]
     public class Platform
     {
+        public Platform() { }
+
+        public Platform(Platform other)
+        {
+            this.Name = other.Name;
+            this.SourceName = other.SourceName;
+            this.Emulator = other.Emulator;
+            this.BoxFrontPath = other.BoxFrontPath;
+            this.ScreenshotGameTitlePath = other.ScreenshotGameTitlePath;
+            this.ScreenshotGameplayPath = other.ScreenshotGameplayPath;
+            this.ScreenshotGameSelectPath = other.ScreenshotGameSelectPath;
+            this.VideoPath = other.VideoPath;
+        }
+    }
+}
         public enum EmulatorType
         {
             retroarch,
