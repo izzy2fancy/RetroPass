@@ -36,8 +36,9 @@ jobs:
         uses: NuGet/setup-nuget@v2.0.0
         
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: checkout
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+            
         
       # Get tag name so a proper package name can be generated
       - name: Get tag
