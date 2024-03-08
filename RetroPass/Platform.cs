@@ -78,7 +78,7 @@ else
     // Let it default to retroarch if no match is found
     EmulatorType = PlatformEmulatorType.retroarch;
 }
-        public Platform Copy()
+        public Platform Clone()
         {
             return (Platform)this.MemberwiseClone();
         }
