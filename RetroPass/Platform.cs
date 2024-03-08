@@ -15,7 +15,7 @@ namespace RetroPass
             xeniacanary,
             ppsspp,
             duckstation,
-            duckstation_uwp,
+            duckstationuwp,
         }
 
         public string Name { get; set; }
@@ -71,7 +71,7 @@ namespace RetroPass
             }
             else if (emulatorPath.Contains("duckstation-uwp", System.StringComparison.CurrentCultureIgnoreCase))
             {
-                EmulatorType = EEmulatorType.duckstation-uwp;
+                EmulatorType = EEmulatorType.duckstationuwp;
             }
             else
             {
