@@ -20,7 +20,7 @@ namespace RetroPass
 
         public string Name { get; set; }
         public string SourceName { get; set; }
-        public EmulatorType EmulatorType { get; set; }
+        public PlatformEmulatorType EmulatorType { get; set; }
         public string BoxFrontPath { get; set; }
         public string ScreenshotGameTitlePath { get; set; }
         public string ScreenshotGameplayPath { get; set; }
