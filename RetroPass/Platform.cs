@@ -5,18 +5,21 @@ namespace RetroPass
 {
     public class Platform
     {
-        public enum EmulatorTypeEnum
+        public enum EmulatorType
         {
             retroarch,
             rgx,
             xbsx2,
             dolphin,
             xenia,
-            xeniacanary,
             ppsspp,
+            xeniacanary,
             duckstation,
-            duckstationuwp,
+            duckstationuwp
         }
+
+    
+
 
         public string Name { get; set; }
         public string SourceName { get; set; }
