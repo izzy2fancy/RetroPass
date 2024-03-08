@@ -1,7 +1,11 @@
-﻿name: RetroPass Build
+name: RetroPass Build 
 
+# Controls when the workflow will run
 on:
-  workflow_dispatch:
+  # Triggers the workflow on tag event
+  push:
+    tags:
+      - 'v*'
       
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -24,46 +28,42 @@ jobs:
       PackageOutputBaseName: RetroPass
 
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-       - name: Add msbuild to PATH
-         uses: microsoft/setup-msbuild@v1
+    steps:            
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1
         
-       - name: Setup NuGet.exe for use with actions
-         uses: NuGet/setup-nuget@v1.0.5
+      - name: Setup NuGet.exe for use with actions
+        uses: NuGet/setup-nuget@v1.0.5
         
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-       - name: checkout
-         uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2
         
       # Get tag name so a proper package name can be generated
-       - name: Get tag
-         id: getTag
-         run: echo "v1.12.0"   # Command to output the desired tag
-         shell: bash
-  
-       - name: Set tag output
-         run: echo "::set-output name=tag::v1.12.0"  
-        
+      - name: Get tag
+        id: getTag
+        # You may pin to the exact commit or the version.
+        uses: dawidd6/action-get-tag@v1.1.0
       
       # Create package name
-       - name: GetPackageName
-         id: getPackageName
-         run: |
+      - name: GetPackageName
+        id: getPackageName
+        run: |
           $PackageName = "${{ env.PackageOutputBaseName }}" + "_" + "${{ steps.getTag.outputs.tag }}"          
           echo "::set-output name=PackageName::$PackageName"
           Write-Host "Package Name is $PackageName"
                
       # Decode the Base64 encoded Pfx
-       - name: Decode the Pfx
-         run: |
+      - name: Decode the Pfx
+        run: |
           $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
           $currentDirectory = Get-Location
           $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:ProjectDirectory -AdditionalChildPath $env:SigningCertificate
           [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)        
       
       # Build app
-       - name: App build
-         run: msbuild $env:SolutionPath 
+      - name: App build
+        run: msbuild $env:SolutionPath 
           /p:Platform=$env:Platform 
           /p:Configuration=$env:Configuration 
           /p:UapAppxPackageBuildMode=$env:BuildMode 
@@ -74,12 +74,12 @@ jobs:
           /restore
 
       # Remove the .pf
-       - name: Remove the .pfx
-         run: Remove-Item -path $env:ProjectDirectory/$env:SigningCertificate
+      - name: Remove the .pfx
+        run: Remove-Item -path $env:ProjectDirectory/$env:SigningCertificate
         
       # Clean the package
-       - name: Clean package
-         run: | 
+      - name: Clean package
+        run: | 
           $PackagePath = "${{ env.PackageOutputRootDir }}\${{steps.getPackageName.outputs.PackageName}}"
           Remove-Item -Recurse -path $PackagePath/Add-AppDevPackage.resources
           Remove-Item -Recurse -path $PackagePath/TelemetryDependencies
@@ -90,31 +90,31 @@ jobs:
           Remove-Item -Recurse -path $PackagePath/Install.ps1
           
       # Archive the package
-       - name: Create archive
-         run: |
+      - name: Create archive
+        run: |
           $PackagePath = "${{ env.PackageOutputRootDir }}\${{steps.getPackageName.outputs.PackageName}}"
           Compress-Archive -Path $PackagePath\* -DestinationPath "$PackagePath.zip"
           dir "${{ env.PackageOutputRootDir }}"
        
       # Create the release:  https://github.com/actions/create-release
-       - name: Create release
-         id: create_release
-         uses: actions/create-release@v1
-         env:
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-         with:
+        with:
           tag_name: ${{steps.getPackageName.outputs.PackageName}}
           release_name:  ${{steps.getPackageName.outputs.PackageName}}
           draft: false
           prerelease: false
           
       # Upload release asset:   https://github.com/actions/upload-release-asset
-       - name: Update release asset
-         id: upload-release-asset
-         uses: actions/upload-release-asset@v1
-         env:
+      - name: Update release asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         with:
+        with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}  # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
           asset_path: ${{ env.PackageOutputRootDir }}\${{steps.getPackageName.outputs.PackageName}}.zip
           asset_name: ${{steps.getPackageName.outputs.PackageName}}.zip
