@@ -48,7 +48,7 @@ jobs:
         id: getPackageName
         run: |
          TAG=${{ github.ref }}
-         TAG=${TAG#refs/tags/}  # Remove the prefix
+         TAG=${TAG##*/}  # Remove the prefix
          PackageName="${{ env.PackageOutputBaseName }}_${TAG}"
          echo "PackageName=$PackageName" >> $GITHUB_ENV
          
