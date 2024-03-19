@@ -41,18 +41,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-         fetch-depth: 0
-         
-      - name: Get tag
-        id: getTag
-        run: echo "TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
-        shell: cmd
+         fetch-depth: 0     
         
       # Create package name
       - name: GetPackageName
         id: getPackageName
         run: |
-         PackageName="${{ env.PackageOutputBaseName }}_${{ github.ref }}"
+         TAG=${{ github.ref }}
+         TAG=${TAG#refs/tags/}  # Remove the prefix
+         PackageName="${{ env.PackageOutputBaseName }}_${TAG}"
          echo "PackageName=$PackageName" >> $GITHUB_ENV
          
       # Decode the Base64 encoded Pfx
