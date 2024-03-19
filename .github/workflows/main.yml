@@ -20,7 +20,7 @@ jobs:
       Configuration: Release
       BuildMode: SideLoadOnly
       AppxBundle: Never
-      SigningCertificate: RetroPassKey.pfx      
+      SigningCertificate: RetroPass.pfx      
       ProjectPath: RetroPass\RetroPass.csproj
       ProjectDirectory: .\RetroPass
       PackageOutputRootDir: C:\AppPackage
