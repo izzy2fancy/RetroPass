@@ -38,19 +38,20 @@ jobs:
       - name: Create environment file for NuGet version
         run: echo "NUGET_VERSION=latest"
         
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: checkout
+      - name: Checkout code
         uses: actions/checkout@v2
-        
+        with:
+         fetch-depth: 0
+         
       - name: Get tag
         id: getTag
         run: echo "TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
         shell: cmd
-      
+      # Create package name
       - name: GetPackageName
         id: getPackageName
         run: |
-         $PackageName="${{ env.PackageOutputBaseName }}_${{ env.TAG }}"
+         PackageName="${{ env.PackageOutputBaseName }}_${{ github.ref }}"
          echo "PackageName=$PackageName" >> $GITHUB_ENV
          
       # Decode the Base64 encoded Pfx
