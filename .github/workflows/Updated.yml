@@ -44,10 +44,9 @@ jobs:
         
       - name: Get tag
         id: getTag
-        run: |
-         TAG=$(git describe --tags --abbrev=0)
-         echo "TAG=$TAG" >> $GITHUB_ENV
-         
+        run: echo "TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+        shell: cmd
+      
       # Create package name
       - name: Set Package Name
         run: |
