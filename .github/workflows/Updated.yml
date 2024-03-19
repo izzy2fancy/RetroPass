@@ -43,12 +43,10 @@ jobs:
         with:
          fetch-depth: 0     
          
-      # Create package name
-      - name: GetPackageName
-        id: getPackageName
+      - name: GitHub Tag Name example
         run: |
-         TAG="${{ github.ref }}"
-         echo "TAG=$TAG" >> $GITHUB_ENV
+         echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
+         echo "Tag 
          
       # Decode the Base64 encoded Pfx
       - name: Decode the Pfx
