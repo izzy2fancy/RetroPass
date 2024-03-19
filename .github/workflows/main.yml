@@ -33,10 +33,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1
         
       - name: Setup NuGet.exe for use with actions
-        uses: NuGet/setup-nuget@v1.0.5
-
-      - name: Create environment file for NuGet version
-        run: echo "NUGET_VERSION=latest" >> $GITHUB_ENV
+        uses: NuGet/setup-nuget@v1.0.5    
         
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: checkout
