@@ -42,12 +42,15 @@ jobs:
         uses: actions/checkout@v2
         with:
          fetch-depth: 0     
-         
-      - name: GitHub Tag Name example
+
+      # Create package name
+      - name: GetPackageName
+        id: getPackageName
         run: |
-         echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-         echo "Tag"
-         
+         TAG="${{ github.ref }}"
+         TAG="${TAG#refs/tags/}"  # Remove the prefix
+         echo "Tag name from GITHUB_REF: $TAG"
+         echo "TAG=$TAG" >> $GITHUB_ENV
       # Decode the Base64 encoded Pfx
       - name: Decode the Pfx
         run: |
