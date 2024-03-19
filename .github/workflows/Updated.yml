@@ -46,7 +46,7 @@ jobs:
       - name: GitHub Tag Name example
         run: |
          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-         echo "Tag 
+         echo "Tag"
          
       # Decode the Base64 encoded Pfx
       - name: Decode the Pfx
