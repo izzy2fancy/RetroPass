@@ -51,7 +51,6 @@ jobs:
         id: getPackageName
         run: |
          PackageName="${{ env.PackageOutputBaseName }}_${{ env.TAG }}"
-         echo "Package Name is $PackageName"
          echo "PackageName=$PackageName" >> $GITHUB_ENV
          
       # Decode the Base64 encoded Pfx
