@@ -44,6 +44,7 @@ jobs:
         
       - name: Get tag
         id: getTag
+        
       # You may pin to the exact commit or the version.
         uses: dawidd6/action-get-tag@v1.1.0
 
@@ -69,58 +70,58 @@ jobs:
       # Build app
       - name: App build
         run: msbuild $env:SolutionPath 
-          /p:Platform=$env:Platform 
-          /p:Configuration=$env:Configuration 
-          /p:UapAppxPackageBuildMode=$env:BuildMode 
-          /p:AppxBundle=$env:AppxBundle 
-          /p:PackageCertificateKeyFile=$env:SigningCertificate 
-          /p:PackageCertificatePassword=${{ secrets.PFX_KEY_PASSWORD }}
-          /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\${{steps.getPackageName.outputs.PackageName}}\"          
-          /restore
+         /p:Platform=$env:Platform 
+         /p:Configuration=$env:Configuration 
+         /p:UapAppxPackageBuildMode=$env:BuildMode 
+         /p:AppxBundle=$env:AppxBundle 
+         /p:PackageCertificateKeyFile=$env:SigningCertificate 
+         /p:PackageCertificatePassword=${{ secrets.PFX_KEY_PASSWORD }}
+         /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\${{ env.PackageName }}\"          
+         /restore
 
-      # Remove the .pf
+      # Remove the .pfx
       - name: Remove the .pfx
         run: Remove-Item -path $env:ProjectDirectory/$env:SigningCertificate
-        
+
       # Clean the package
       - name: Clean package
         run: | 
-          $PackagePath = "${{ env.PackageOutputRootDir }}\${{steps.getPackageName.outputs.PackageName}}"
-          Remove-Item -Recurse -path $PackagePath/Add-AppDevPackage.resources
-          Remove-Item -Recurse -path $PackagePath/TelemetryDependencies
-          Remove-Item -Recurse -path $PackagePath/Dependencies/arm
-          Remove-Item -Recurse -path $PackagePath/Dependencies/arm64
-          Remove-Item -Recurse -path $PackagePath/Dependencies/x86
-          Remove-Item -path $PackagePath/Add-AppDevPackage.ps1
-          Remove-Item -Recurse -path $PackagePath/Install.ps1
-          
+         $PackagePath = "${{ env.PackageOutputRootDir }}\${{ env.PackageName }}"
+         Remove-Item -Recurse -path $PackagePath/Add-AppDevPackage.resources
+         Remove-Item -Recurse -path $PackagePath/TelemetryDependencies
+         Remove-Item -Recurse -path $PackagePath/Dependencies/arm
+         Remove-Item -Recurse -path $PackagePath/Dependencies/arm64
+         Remove-Item -Recurse -path $PackagePath/Dependencies/x86
+         Remove-Item -path $PackagePath/Add-AppDevPackage.ps1
+         Remove-Item -Recurse -path $PackagePath/Install.ps1
+    
       # Archive the package
       - name: Create archive
         run: |
-          $PackagePath = "${{ env.PackageOutputRootDir }}\${{steps.getPackageName.outputs.PackageName}}"
-          Compress-Archive -Path $PackagePath\* -DestinationPath "$PackagePath.zip"
-          dir "${{ env.PackageOutputRootDir }}"
-       
+         $PackagePath = "${{ env.PackageOutputRootDir }}\${{ env.PackageName }}"
+         Compress-Archive -Path $PackagePath\* -DestinationPath "$PackagePath.zip"
+         dir "${{ env.PackageOutputRootDir }}"
+ 
       # Create the release:  https://github.com/actions/create-release
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{steps.getPackageName.outputs.PackageName}}
-          release_name:  ${{steps.getPackageName.outputs.PackageName}}
-          draft: false
-          prerelease: false
-          
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:      
+         tag_name: ${{ env.PackageName }}
+         release_name:  ${{ env.PackageName }}
+         draft: false
+         prerelease: false
+    
       # Upload release asset:   https://github.com/actions/upload-release-asset
       - name: Update release asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}  # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ${{ env.PackageOutputRootDir }}\${{steps.getPackageName.outputs.PackageName}}.zip
-          asset_name: ${{steps.getPackageName.outputs.PackageName}}.zip
-          asset_content_type: application/zip          
+         upload_url: ${{ steps.create_release.outputs.upload_url }}  # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+         asset_path: ${{ env.PackageOutputRootDir }}\${{ env.PackageName }}.zip
+         asset_name: ${{ env.PackageName }}.zip
+         asset_content_type: application/zip          
