@@ -47,10 +47,12 @@ jobs:
         run: echo "TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
         shell: cmd
       
-      # Create package name
-      - name: Set Package Name
+      - name: GetPackageName
+        id: getPackageName
         run: |
-         echo "PackageName=${{ env.PackageOutputBaseName }}_${{ env.TAG }}" >> $GITHUB_ENV
+         PackageName="${{ env.PackageOutputBaseName }}_${{ env.TAG }}"
+         echo "Package Name is $PackageName"
+         echo "PackageName=$PackageName" >> $GITHUB_ENV
          
       # Decode the Base64 encoded Pfx
       - name: Decode the Pfx
