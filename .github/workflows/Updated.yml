@@ -49,13 +49,11 @@ jobs:
 
       - name: Set tag environment variable
         run: echo "TAG=${{ steps.getTag.outputs.tag }}" >> $GITHUB_ENV
-        
-      - name: GetPackageName
-        id: getPackageName
+    
+      # Create package name
+      - name: Set Package Name
         run: |
-         PackageName="${{ env.PackageOutputBaseName }}_${{ env.TAG }}"
-         echo "Package Name is $PackageName"
-         echo "PackageName=$PackageName" >> $GITHUB_ENV
+         echo "PackageName=${{ env.PackageOutputBaseName }}_${{ env.TAG }}" >> $GITHUB_ENV
          
       # Decode the Base64 encoded Pfx
       - name: Decode the Pfx
