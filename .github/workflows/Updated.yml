@@ -48,8 +48,8 @@ jobs:
         uses: dawidd6/action-get-tag@v1.1.0
 
       - name: Set tag environment variable
-        run: echo "TAG=${{ steps.getTag.outputs.tag }}" >> $GITHUB_ENV
-    
+        run: echo "TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+        
       # Create package name
       - name: Set Package Name
         run: |
