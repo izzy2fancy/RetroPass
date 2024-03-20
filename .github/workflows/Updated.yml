@@ -33,12 +33,12 @@ jobs:
 
       - id: getPackageName
         run: |
-          TAG="${{ github.ref }}"
+          TAG="${{ github.ref }}"  # Remove double quotes
           TAG="${TAG#refs/tags/}"  # Remove the prefix
           echo "Tag name from GITHUB_REF: $TAG"
           TAG="RetroPass-$TAG"  # Modify the TAG variable here
           echo "TAG=$TAG" >> $GITHUB_ENV
-
+          
       - run: |
           $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
           $currentDirectory = Get-Location
