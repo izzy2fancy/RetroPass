@@ -51,6 +51,7 @@ jobs:
          TAG="${TAG#refs/tags/}"  # Remove the prefix
          echo "Tag name from GITHUB_REF: $TAG"
          echo "TAG=$TAG" >> $GITHUB_ENV
+         
       # Decode the Base64 encoded Pfx
       - name: Decode the Pfx
         run: |
