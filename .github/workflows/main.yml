@@ -52,15 +52,21 @@ jobs:
           $PackageName = "${{ env.PackageOutputBaseName }}" + "_" + "${{ steps.getTag.outputs.tag }}"          
           echo "::set-output name=PackageName::$PackageName"
           Write-Host "Package Name is $PackageName"
-               
+
       # Decode the Base64 encoded Pfx
       - name: Decode the Pfx
         run: |
           $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
           $currentDirectory = Get-Location
           $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:ProjectDirectory -AdditionalChildPath $env:SigningCertificate
-          [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)        
-      
+          [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+          
+      # Trust the certificate
+      - name: Trust the certificate
+        run: |
+          $certificatePath = Join-Path -Path $env:ProjectDirectory -ChildPath $env:SigningCertificate
+          Import-PfxCertificate -FilePath $certificatePath -CertStoreLocation Cert:\CurrentUser\Root -Password (ConvertTo-SecureString -String "${{ secrets.PFX_KEY_PASSWORD }}" -AsPlainText -Force)
+          
       # Build app
       - name: App build
         run: msbuild $env:SolutionPath 
