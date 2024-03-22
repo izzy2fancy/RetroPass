@@ -65,6 +65,7 @@ jobs:
       - name: Trust the certificate
         run: |
           $certificatePath = Join-Path -Path $env:ProjectDirectory -ChildPath $env:SigningCertificate
+          Write-Host "Certificate Path: $certificatePath"
           Import-PfxCertificate -FilePath $certificatePath -CertStoreLocation Cert:\CurrentUser\Root -Password (ConvertTo-SecureString -String "${{ secrets.PFX_KEY_PASSWORD }}" -AsPlainText -Force)
           
       # Build app
