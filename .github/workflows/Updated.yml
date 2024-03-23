@@ -65,19 +65,18 @@ jobs:
 
       - uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.TAG }}
-          release_name:  ${{ env.TAG }}
-          draft: false
-          prerelease: false
+         tag_name: ${{ env.TAG }}  # Keep this as-is
+         release_name: ${{ env.PACKAGE_NAME }}  # Use PACKAGE_NAME for release name
+         draft: false
+         prerelease: false
 
       - uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.PackageOutputRootDir }}\${{ env.TAG }}.zip
-          asset_name: ${{ env.TAG }}.zip
-          asset_content_type: application/zip
-          
+         upload_url: ${{ steps.create_release.outputs.upload_url }}
+         asset_path: ${{ env.PackageOutputRootDir }}\${{ env.PACKAGE_NAME }}.zip  
+         asset_name: ${{ env.PACKAGE_NAME }}.zip
+         asset_content_type: application/zip
