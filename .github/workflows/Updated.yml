@@ -67,8 +67,8 @@ jobs:
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-         tag_name: ${{ env.TAG }}  # Keep this as-is
-         release_name: ${{ env.PACKAGE_NAME }}  # Use PACKAGE_NAME for release name
+         tag_name: ${{ env.TAG }}  
+         release_name: ${{ env.PACKAGE_NAME }} 
          draft: false
          prerelease: false
 
