@@ -30,15 +30,14 @@ jobs:
       - uses: actions/checkout@v4.1.1
         with:
           fetch-tags: true
-
+    
       - id: getPackageName
         run: |
-          TAG="${{ github.ref }}"  # Remove double quotes
-          TAG="${TAG#refs/tags/}"  # Remove the prefix
-          echo "Tag name from GITHUB_REF: $TAG"
-          TAG="RetroPass-$TAG"  # Modify the TAG variable here
-          echo "TAG=$TAG" >> $GITHUB_ENV
-          
+         TAG="${{ github.ref }}"  # Remove double quotes
+         TAG="${TAG#refs/tags/}"  # Remove the prefix
+         PACKAGE_NAME="RetroPass_${TAG}"  # Create package name with desired format
+         echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
+         
       - run: |
           $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_PFX }}")
           $currentDirectory = Get-Location
