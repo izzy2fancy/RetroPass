@@ -44,8 +44,8 @@ jobs:
           $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:ProjectDirectory -AdditionalChildPath $env:SigningCertificate
           [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
 
-      - run: msbuild $env:SolutionPath /p:Platform=$env:Platform /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundle=$env:AppxBundle /p:PackageCertificateKeyFile=$env:SigningCertificate /p:PackageCertificatePassword=${{ secrets.PFX_KEY_PASSWORD }} /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\${{ env.TAG }}\" /restore
-
+      - run: msbuild $env:SolutionPath /p:Platform=$env:Platform /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundle=$env:AppxBundle /p:PackageCertificateKeyFile=$env:SigningCertificate /p:PackageCertificatePassword=${{ secrets.PFX_KEY_PASSWORD }} /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\${{ env.PACKAGE_NAME }}\" /restore
+      
       - run: Remove-Item -path $env:ProjectDirectory/$env:SigningCertificate
 
       - run: | 
