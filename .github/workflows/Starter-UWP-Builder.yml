@@ -1,0 +1,42 @@
+name: UWP Application Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.1  
+
+      - name: Setup Windows 10 SDK Action
+        uses: GuillaumeFalourd/setup-windows10-sdk-action@v2 
+
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2.22.0
+
+      - name: Fetch Dependencies
+        run: |
+          pacman -S --noconfirm unzip make git mingw-w64-x86_64-gcc mingw-w64-x86_64-make python3     
+      
+      - name: Build UWP application
+        run: |
+          # Navigate to your project directory
+          cd $GITHUB_WORKSPACE
+          # Run make to build the application
+          make
+          # Run make to package the application
+          make package
+
+      - name: Save artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: uwp_application
+          path: UWPApp.msix
