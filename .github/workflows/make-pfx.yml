@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   generate_certificate:
-    runs-on: windows-2019
+    runs-on: windows-2015
 
     steps:
     - name: Checkout repository
