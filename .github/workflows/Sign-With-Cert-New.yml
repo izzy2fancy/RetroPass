@@ -33,7 +33,7 @@ jobs:
          $cer_path = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "certificate.cer"
          [IO.File]::WriteAllBytes($cer_path, $cer_content)
          # Add the certificate path to the .csproj file
-         $csproj_path = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "RetroPass\RetroPass.csproj"
+         $csproj_path = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "RetroPass.csproj"
          $csproj_content = Get-Content -Path $csproj_path
          $csproj_content = $csproj_content -replace "<PackageCertificateKeyFile>.*</PackageCertificateKeyFile>", "<PackageCertificateKeyFile>$(ProjectDir)certificate.cer</PackageCertificateKeyFile>"
          Set-Content -Path $csproj_path -Value $csproj_content
