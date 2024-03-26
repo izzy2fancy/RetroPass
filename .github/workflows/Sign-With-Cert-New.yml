@@ -28,13 +28,13 @@ jobs:
         with:
           fetch-tags: true
     
-      - name: Build and Sign MSIX package
+      - name: Decode and use PFX file then Build
         run: |
-         echo "${{ secrets.PFX_KEY }}" > certificate.pfx
-         # Optionally, you may need to set appropriate permissions on the PFX file
+         echo "${{ secrets.BASE64_ENCODED_PFX_FILE }}" | base64 -d > certificate.pfx
          chmod 600 certificate.pfx
+         # Use the certificate.pfx file in your msbuild command
          msbuild $env:SolutionPath /p:Platform=$env:Platform /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix" /restore /p:SignPackage=true /p:CertificatePath="certificate.pfx"
-         
+    
       - run: | 
          $PackagePath = "${{ env.PackageOutputRootDir }}"
          Remove-Item -Recurse -path $PackagePath/Add-AppDevPackage.resources
