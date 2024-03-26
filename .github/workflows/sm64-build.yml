@@ -1,0 +1,40 @@
+name: Build sm64ex-coop Android Port
+
+on:
+  push:
+    branches:
+      - master # Adjust branch name if needed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y unzip make git python3
+
+      - name: Clone the repository with submodules
+        run: git clone --recurse-submodules https://github.com/MikeSeaver555/sm64ex-coop-android-nvidia-shield-tv.git
+
+      - name: Navigate to source directory
+        run: cd sm64ex-coop-android-nvidia-shield-tv/app/jni/src
+
+      - name: Copy baserom.us.z64
+        run: cp /storage/emulated/0/sm64/baserom.us.z64 .
+
+      - name: Build sm64ex-coop
+        run: |
+          make -j$(nproc)
