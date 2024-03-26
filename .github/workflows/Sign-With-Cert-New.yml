@@ -27,11 +27,6 @@ jobs:
       - name: Set NuGet version to latest
         run: echo "NUGET_VERSION=latest"
 
-      - name: Checkout code
-        uses: actions/checkout@v4.1.1
-        with:
-          fetch-tags: true
-    
       - name: Decode certificate and configure project
         run: |
           $cer_content = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_CER }}"))
@@ -43,6 +38,13 @@ jobs:
           $csproj_content = $csproj_content -replace "<PackageCertificateKeyFile>.*</PackageCertificateKeyFile>", "<PackageCertificateKeyFile>$(ProjectDir)certificate.cer</PackageCertificateKeyFile>"
           Set-Content -Path $csproj_path -Value $csproj_content
 
+      - name: Checkout code
+        uses: actions/checkout@v4.1.1
+    
+      - name: Build project
+        run: |
+          msbuild $env:SolutionPath /p:Platform=$env:Platform /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix" /restore
+      
       - name: Remove unnecessary files
         run: | 
           $PackagePath = "${{ env.PackageOutputRootDir }}"
