@@ -28,16 +28,17 @@ jobs:
         with:
           fetch-tags: true
     
-      - run: msbuild $env:SolutionPath /p:Platform=$env:Platform /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix" /restore
-      
-      - name: Sign MSIX package
+      - name: Build and Sign MSIX package
         run: |
           $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_CER }}")
           $currentDirectory = Get-Location
           $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:ProjectDirectory -AdditionalChildPath "certificate.cer"
           [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+          
+          msbuild $env:SolutionPath /p:Platform=$env:Platform /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix" /restore
+          
           SignTool sign /fd SHA256 /a /f $certificatePath "${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix"
-
+          
       - run: | 
          $PackagePath = "${{ env.PackageOutputRootDir }}"
          Remove-Item -Recurse -path $PackagePath/Add-AppDevPackage.resources
