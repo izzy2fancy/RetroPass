@@ -12,9 +12,7 @@ jobs:
 
     - name: Set up PowerShell
       uses: PowerShell/setup-powershell@v1
-      with:
-        pwsh-version: '7.1' # Specify the PowerShell version if needed
-
+      
     - name: Generate Certificate
       shell: pwsh
       run: |
