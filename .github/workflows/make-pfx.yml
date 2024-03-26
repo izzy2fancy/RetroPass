@@ -1,19 +1,37 @@
-name: test with self signed certificate
+name: Generate Certificate
+
 on: [push]
 
 jobs:
-  build:
+  generate_certificate:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Generate certificates for next step
-        uses: kofemann/action-create-certificate@v0.0.4
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-        with:
-          hostcert: 'hostcert.pem'
-          hostkey:  'hostkey.pem'
-          cachain:  'ca-chain.pem'
+    - name: Set up PowerShell
+      uses: PowerShell/setup-powershell@v1
+      with:
+        pwsh-version: '7.1' # Specify the PowerShell version if needed
 
-      - name: Use generated certificates
-        run: |
-            openssl x509 -in hostcert.pem -noout -text
+    - name: Generate Certificate
+      shell: pwsh
+      run: |
+        $date_now = Get-Date
+        $extended_date = $date_now.AddYears(3)
+        $cert = New-SelfSignedCertificate -certstorelocation cert:\localmachine\my -dnsname RetroPass -notafter $extended_date
+
+    - name: Export Certificate
+      shell: pwsh
+      run: |
+        $cert | Export-Certificate -FilePath ./certificate.crt
+        $cert | Export-PfxCertificate -FilePath ./certificate.pfx -Password (ConvertTo-SecureString -String "RetroPass" -AsPlainText -Force)
+
+    - name: Upload Certificate
+      uses: actions/upload-artifact@v2
+      with:
+        name: certificate
+        path: |
+          ./certificate.crt
+          ./certificate.pfx
