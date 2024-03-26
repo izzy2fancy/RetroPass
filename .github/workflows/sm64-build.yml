@@ -32,9 +32,6 @@ jobs:
       - name: Navigate to source directory
         run: cd sm64ex-coop-android-nvidia-shield-tv/app/jni/src
 
-      - name: Copy baserom.us.z64
-        run: cp -f baserom.us.z64 .
-
       - name: Build sm64ex-coop
         run: |
           make -j$(nproc)
