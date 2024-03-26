@@ -30,7 +30,7 @@ jobs:
     
       - name: Build and Sign MSIX package
         run: |
-         echo "${{ secrets.PFX_FILE }}" > certificate.pfx
+         echo "${{ secrets.PFX_KEY }}" > certificate.pfx
          # Optionally, you may need to set appropriate permissions on the PFX file
          chmod 600 certificate.pfx
          msbuild $env:SolutionPath /p:Platform=$env:Platform /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix" /restore /p:SignPackage=true /p:CertificatePath="certificate.pfx"
