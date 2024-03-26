@@ -1,7 +1,7 @@
 name: RetroPass Build 
 
 on:
-  push:
+ workflow_dispatch:
 
 jobs:
   generate-pfx:
