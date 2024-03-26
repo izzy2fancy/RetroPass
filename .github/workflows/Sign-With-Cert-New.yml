@@ -27,17 +27,17 @@ jobs:
       - name: Set NuGet version to latest
         run: echo "NUGET_VERSION=latest"
 
-      - name: Decode certificate and configure project
+      - name: Decode certificate and set as property
         run: |
-          $cer_content = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_CER }}"))
-          $cer_path = Join-Path -Path $env:ProjectDirectory -ChildPath "certificate.cer"
-          Set-Content -Path $cer_path -Value $cer_content
-          # Add the certificate path to the .csproj file
-          $csproj_path = Join-Path -Path $env:ProjectDirectory -ChildPath "RetroPass.csproj"
-          $csproj_content = Get-Content -Path $csproj_path
-          $csproj_content = $csproj_content -replace "<PackageCertificateKeyFile>.*</PackageCertificateKeyFile>", "<PackageCertificateKeyFile>$(ProjectDir)certificate.cer</PackageCertificateKeyFile>"
-          Set-Content -Path $csproj_path -Value $csproj_content
-
+         $cer_content = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_CER }}")
+         $cer_path = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "certificate.cer"
+         [IO.File]::WriteAllBytes($cer_path, $cer_content)
+         # Add the certificate path to the .csproj file
+         $csproj_path = Join-Path -Path $env:GITHUB_WORKSPACE -ChildPath "RetroPass\RetroPass.csproj"
+         $csproj_content = Get-Content -Path $csproj_path
+         $csproj_content = $csproj_content -replace "<PackageCertificateKeyFile>.*</PackageCertificateKeyFile>", "<PackageCertificateKeyFile>$(ProjectDir)certificate.cer</PackageCertificateKeyFile>"
+         Set-Content -Path $csproj_path -Value $csproj_content
+    
       - name: Checkout code
         uses: actions/checkout@v4.1.1
     
