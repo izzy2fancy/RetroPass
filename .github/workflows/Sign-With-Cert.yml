@@ -18,64 +18,58 @@ jobs:
       PackageOutputRootDir: C:\AppPackage
 
     steps:
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
+      - uses: microsoft/setup-msbuild@v2
 
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v2.0.0
+      - uses: NuGet/setup-nuget@v2.0.0
 
-      - name: Set NuGet version
-        run: echo "NUGET_VERSION=latest"
+      - run: echo "NUGET_VERSION=latest"
 
-      - name: Checkout code
-        uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.1.1
         with:
           fetch-tags: true
     
-      - name: Build and Sign MSIX package
+      - run: msbuild $env:SolutionPath /p:Platform=$env:Platform /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix" /restore
+      
+      - name: Decode certificate and set as property
         run: |
-          $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_CER }}")
-          $currentDirectory = Get-Location
-          $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:ProjectDirectory -AdditionalChildPath "certificate.cer"
-          [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
-          
-          msbuild $env:SolutionPath /p:Platform=$env:Platform /p:Configuration=$env:Configuration /p:UapAppxPackageBuildMode=$env:BuildMode /p:AppxBundle=$env:AppxBundle /p:AppxPackageTestDir="${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix" /restore
-          
-          SignTool sign /fd SHA256 /a /f $certificatePath "${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix"
-          
-      - name: Clean package
-        run: | 
-          $PackagePath = "${{ env.PackageOutputRootDir }}"
-          Remove-Item -Recurse -path $PackagePath/Add-AppDevPackage.resources
-          Remove-Item -Recurse -path $PackagePath/TelemetryDependencies
-          Remove-Item -Recurse -path $PackagePath/Dependencies/arm
-          Remove-Item -Recurse -path $PackagePath/Dependencies/arm64
-          Remove-Item -Recurse -path $PackagePath/Dependencies/x86
-          Remove-Item -path $PackagePath/Add-AppDevPackage.ps1
-          Remove-Item -Recurse -path $PackagePath/Install.ps1
+          $cer_content = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("${{ secrets.BASE64_ENCODED_CER }}"))
+          $cer_path = Join-Path -Path $env:ProjectDirectory -ChildPath "certificate.cer"
+          Set-Content -Path $cer_path -Value $cer_content
+          # Add the certificate path to the .csproj file
+          $csproj_path = Join-Path -Path $env:ProjectDirectory -ChildPath "RetroPass.csproj"
+          $csproj_content = Get-Content -Path $csproj_path
+          $csproj_content = $csproj_content -replace "<PackageCertificateKeyFile>.*</PackageCertificateKeyFile>", "<PackageCertificateKeyFile>$(ProjectDir)certificate.cer</PackageCertificateKeyFile>"
+          Set-Content -Path $csproj_path -Value $csproj_content
 
-      - name: Create archive
-        run: |
-          $PackagePath = "${{ env.PackageOutputRootDir }}"
-          Compress-Archive -Path $PackagePath\* -DestinationPath "$PackagePath.zip"
-          dir "${{ env.PackageOutputRootDir }}"
-
-      - name: Create release
-        uses: actions/create-release@v1
+      - run: | 
+         $PackagePath = "${{ env.PackageOutputRootDir }}"
+         Remove-Item -Recurse -path $PackagePath/Add-AppDevPackage.resources
+         Remove-Item -Recurse -path $PackagePath/TelemetryDependencies
+         Remove-Item -Recurse -path $PackagePath/Dependencies/arm
+         Remove-Item -Recurse -path $PackagePath/Dependencies/arm64
+         Remove-Item -Recurse -path $PackagePath/Dependencies/x86
+         Remove-Item -path $PackagePath/Add-AppDevPackage.ps1
+         Remove-Item -Recurse -path $PackagePath/Install.ps1
+         
+      - run: |
+         $PackagePath = "${{ env.PackageOutputRootDir }}"
+         Compress-Archive -Path $PackagePath\* -DestinationPath "$PackagePath.zip"
+         dir "${{ env.PackageOutputRootDir }}"
+         
+      - uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.0  # Example tag name
-          release_name: RetroPass_1.10.1.0_x64  
-          draft: false
-          prerelease: false
+         tag_name: v1.0.0  # Example tag name
+         release_name: RetroPass_1.10.1.0_x64  
+         draft: false
+         prerelease: false
 
-      - name: Upload release asset
-        uses: actions/upload-release-asset@v1
+      - uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix  
-          asset_name: RetroPass_1.10.1.0_x64.msix
-          asset_content_type: application/vnd.ms-appx
+         upload_url: ${{ steps.create_release.outputs.upload_url }}
+         asset_path: ${{ env.PackageOutputRootDir }}\RetroPass_1.10.1.0_x64.msix  
+         asset_name: RetroPass_1.10.1.0_x64.msix
+         asset_content_type: application/vnd.ms-appx
